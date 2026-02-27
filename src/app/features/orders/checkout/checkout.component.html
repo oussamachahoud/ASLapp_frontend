@@ -1,0 +1,143 @@
+<div class="container my-4">
+  <h2 class="mb-4">Checkout</h2>
+
+  @if (error()) {
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ error() }}
+      <button type="button" class="btn-close" (click)="error.set(null)"></button>
+    </div>
+  }
+
+  @if (successMessage()) {
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage() }}
+      <button type="button" class="btn-close" (click)="successMessage.set(null)"></button>
+    </div>
+  }
+
+  <div class="row">
+    <!-- Checkout Form -->
+    <div class="col-lg-8">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Shipping Address</h5>
+
+          @if (addresses().length === 0) {
+            <p class="text-muted">No addresses found. Please add one first.</p>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="navigateToAddAddress()"
+            >
+              Add Address
+            </button>
+          } @else {
+            <div class="row">
+              @for (address of addresses(); track address.id) {
+                <div class="col-md-6 mb-3">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      [value]="address.id"
+                      [(ngModel)]="selectedAddressId"
+                      [id]="'address-' + address.id"
+                    />
+                    <label class="form-check-label" [for]="'address-' + address.id">
+                      <div class="ms-2">
+                        <strong>{{ address.street }}</strong><br />
+                        {{ address.commune }}, {{ address.wilaya }}<br />
+                        <small class="text-muted">{{ address.codePostal }}</small>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <hr />
+
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              (click)="navigateToAddAddress()"
+            >
+              + Add New Address
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Payment Method</h5>
+
+          <div class="row">
+            @for (method of paymentMethods; track method) {
+              <div class="col-md-6 mb-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    [value]="method"
+                    [(ngModel)]="selectedPaymentMethod"
+                    [id]="'payment-' + method"
+                  />
+                  <label class="form-check-label" [for]="'payment-' + method">
+                    {{ method.replace(/_/g, ' ') }}
+                  </label>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="col-lg-4">
+      <div class="card sticky-top" style="top: 1rem;">
+        <div class="card-body">
+          <h5 class="card-title">Order Summary</h5>
+          <hr />
+
+          <div class="d-flex justify-content-between mb-2">
+            <span>Subtotal:</span>
+            <span>{{ cartTotal() }} DZD</span>
+          </div>
+
+          <div class="d-flex justify-content-between mb-2">
+            <span>Shipping:</span>
+            <span class="text-success">Free</span>
+          </div>
+
+          <div class="d-flex justify-content-between mb-3">
+            <span>Tax:</span>
+            <span>0 DZD</span>
+          </div>
+
+          <hr />
+
+          <div class="d-flex justify-content-between mb-4">
+            <span class="fw-bold">Total:</span>
+            <span class="fw-bold h5 text-primary">{{ cartTotal() }} DZD</span>
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-primary w-100"
+            (click)="placeOrder()"
+            [disabled]="isLoading() || !selectedAddressId()"
+          >
+            @if (isLoading()) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Processing...
+            } @else {
+              Place Order
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

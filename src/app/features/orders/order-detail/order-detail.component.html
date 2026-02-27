@@ -1,0 +1,155 @@
+<div class="container my-4">
+  @if (isLoading()) {
+    <div class="text-center py-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  } @else if (error()) {
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ error() }}
+      <button type="button" class="btn-close" (click)="error.set(null)"></button>
+    </div>
+  } @else if (order(); as orderData) {
+    <div class="mb-4">
+      <a routerLink="/orders" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left me-2"></i>Back to Orders
+      </a>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- Order Header -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+                <h5>Order {{ orderData.orderNumber }}</h5>
+                <p class="text-muted mb-0">
+                  {{ orderData.createdAt | date: 'medium' }}
+                </p>
+              </div>
+              <div class="col-auto text-end">
+                <span [class]="'badge ' + getStatusBadgeClass(orderData.status)">
+                  <i [class]="'bi ' + getStatusIcon(orderData.status) + ' me-1'"></i>
+                  {{ orderData.status }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipping Address -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h6 class="mb-0">Shipping Address</h6>
+          </div>
+          <div class="card-body">
+            <p class="mb-1">
+              <strong>{{ orderData.shippingAddress.street }}</strong>
+            </p>
+            <p class="mb-1">
+              {{ orderData.shippingAddress.commune }}, {{ orderData.shippingAddress.wilaya }}
+            </p>
+            <p class="text-muted">
+              {{ orderData.shippingAddress.codePostal }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h6 class="mb-0">Order Items</h6>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of orderData.items; track item.id) {
+                  <tr>
+                    <td>{{ item.productName }}</td>
+                    <td>{{ item.unitPrice }} DZD</td>
+                    <td>{{ item.quantity }}</td>
+                    <td class="fw-bold">{{ item.subtotal }} DZD</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="card">
+          <div class="card-header">
+            <h6 class="mb-0">Payment Details</h6>
+          </div>
+          <div class="card-body">
+            <p class="mb-0">
+              <strong>Payment Method:</strong>
+              {{ orderData.paymentMethod.replace(/_/g, ' ') }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary Sidebar -->
+      <div class="col-lg-4">
+        <div class="card sticky-top" style="top: 1rem;">
+          <div class="card-body">
+            <h6 class="card-title mb-3">Order Summary</h6>
+            <hr />
+
+            <div class="d-flex justify-content-between mb-2">
+              <span>Subtotal:</span>
+              <span>{{ orderData.totalAmount }} DZD</span>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+              <span>Shipping:</span>
+              <span class="text-success">Free</span>
+            </div>
+
+            <div class="d-flex justify-content-between mb-3">
+              <span>Tax:</span>
+              <span>0 DZD</span>
+            </div>
+
+            <hr />
+
+            <div class="d-flex justify-content-between mb-3">
+              <span class="fw-bold">Total:</span>
+              <span class="fw-bold h5 text-primary">{{ orderData.totalAmount }} DZD</span>
+            </div>
+
+            <hr />
+
+            <div class="small text-muted">
+              <p class="mb-2">
+                <strong>Order Status:</strong><br />
+                {{ orderData.status }}
+              </p>
+              <p class="mb-0">
+                <strong>Placed on:</strong><br />
+                {{ orderData.createdAt | date: 'medium' }}
+              </p>
+            </div>
+
+            <hr />
+
+            <a routerLink="/products" class="btn btn-primary w-100">
+              Continue Shopping
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,305 @@
+<div class="container my-4">
+  <h2 class="mb-4">My Profile</h2>
+
+  @if (error()) {
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ error() }}
+      <button type="button" class="btn-close" (click)="error.set(null)"></button>
+    </div>
+  }
+
+  @if (successMessage()) {
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage() }}
+      <button type="button" class="btn-close" (click)="successMessage.set(null)"></button>
+    </div>
+  }
+
+  @if (user(); as currentUser) {
+    <div class="row">
+      <!-- Profile Section -->
+      <div class="col-lg-8">
+        <!-- User Info -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-3 text-center">
+                <img
+                  [src]="getImageUrl(currentUser.imageURL)"
+                  alt="Profile"
+                  class="rounded-circle profile-img mb-3"
+                />
+              </div>
+              <div class="col-md-9">
+                <h5>{{ currentUser.username }}</h5>
+                <p class="text-muted">{{ currentUser.email }}</p>
+                <p class="text-muted">Age: {{ currentUser.age }}</p>
+                <div>
+                  @for (role of currentUser.role; track role) {
+                    <span class="badge bg-info me-2">{{ role }}</span>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+              <div class="col-md-6">
+                <button
+                  class="btn btn-primary"
+                  (click)="toggleEditProfile()"
+                >
+                  {{ isEditingProfile() ? 'Cancel' : 'Edit Profile' }}
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button
+                  class="btn btn-danger float-end"
+                  (click)="logout()"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Profile Form -->
+        @if (isEditingProfile()) {
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Edit Profile</h5>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="profileForm().username"
+                  (input)="updateProfileForm('username', getInputValue($event))"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  [value]="profileForm().email"
+                  (input)="updateProfileForm('email', getInputValue($event))"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Age</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  [value]="profileForm().age"
+                  (input)="updateProfileForm('age', parseAge(getInputValue($event)))"
+                />
+              </div>
+
+              <button
+                class="btn btn-primary"
+                (click)="updateProfile()"
+                [disabled]="isLoading()"
+              >
+                @if (isLoading()) {
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Saving...
+                } @else {
+                  Save Changes
+                }
+              </button>
+            </div>
+          </div>
+
+          <!-- Image Upload -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Change Profile Picture</h5>
+            </div>
+            <div class="card-body">
+              @if (imagePreview()) {
+                <div class="text-center mb-3">
+                  <img [src]="imagePreview()" alt="Preview" class="rounded profile-img" />
+                </div>
+              }
+
+              <div class="mb-3">
+                <input
+                  type="file"
+                  class="form-control"
+                  accept="image/*"
+                  (change)="onImageSelected($event)"
+                />
+              </div>
+
+              <button
+                class="btn btn-primary"
+                (click)="uploadImage()"
+                [disabled]="isLoading() || !selectedImage()"
+              >
+                @if (isLoading()) {
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Uploading...
+                } @else {
+                  Upload Image
+                }
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- Addresses -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Addresses</h5>
+          </div>
+          <div class="card-body">
+            @if (currentUser.addresses && currentUser.addresses.length > 0) {
+              <div class="row">
+                @for (address of currentUser.addresses; track address.id) {
+                  <div class="col-md-6 mb-3">
+                    <div class="border rounded p-3">
+                      <p class="mb-1"><strong>{{ address.street }}</strong></p>
+                      <p class="mb-1">{{ address.commune }}, {{ address.wilaya }}</p>
+                      <p class="mb-3 text-muted">{{ address.codePostal }}</p>
+                      <button
+                        class="btn btn-sm btn-danger"
+                        (click)="deleteAddress(address.id)"
+                        [disabled]="isLoading()"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <p class="text-muted">No addresses added yet</p>
+            }
+
+            <hr />
+
+            <button
+              class="btn btn-outline-primary"
+              (click)="toggleAddAddress()"
+            >
+              {{ isAddingAddress() ? 'Cancel' : '+ Add New Address' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Add Address Form -->
+        @if (isAddingAddress()) {
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Add New Address</h5>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label class="form-label">Street</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="addressForm().street"
+                  (input)="updateAddressForm('street', getInputValue($event))"
+                  placeholder="e.g., 123 Rue Didouche Mourad"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Wilaya</label>
+                <select
+                  class="form-select"
+                  [value]="addressForm().wilaya"
+                  (change)="updateAddressForm('wilaya', getInputValue($event))"
+                >
+                  <option value="">Select a wilaya</option>
+                  @for (wilaya of wilayas; track wilaya) {
+                    <option [value]="wilaya">{{ wilaya }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Commune</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="addressForm().commune"
+                  (input)="updateAddressForm('commune', getInputValue($event))"
+                  placeholder="e.g., Bab El Oued"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Postal Code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="addressForm().codePostal"
+                  (input)="updateAddressForm('codePostal', getInputValue($event))"
+                  placeholder="e.g., 16000"
+                />
+              </div>
+
+              <button
+                class="btn btn-primary"
+                (click)="addAddress()"
+                [disabled]="isLoading()"
+              >
+                @if (isLoading()) {
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Adding...
+                } @else {
+                  Add Address
+                }
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- Danger Zone -->
+        <div class="card border-danger">
+          <div class="card-header bg-danger bg-opacity-10">
+            <h5 class="mb-0 text-danger">Danger Zone</h5>
+          </div>
+          <div class="card-body">
+            <p class="text-muted">Once you delete your account, there is no going back. Please be certain.</p>
+            <button
+              class="btn btn-outline-danger"
+              (click)="deleteAccount()"
+              [disabled]="isLoading()"
+            >
+              Delete Account
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Account Stats</h5>
+            <hr />
+            <p class="text-muted">
+              <strong>User ID:</strong><br />
+              {{ user()?.id ?? 'N/A' }}
+            </p>
+            <hr />
+            <p class="text-muted">
+              <strong>Total Addresses:</strong><br />
+              {{ user()?.addresses?.length ?? 0 }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

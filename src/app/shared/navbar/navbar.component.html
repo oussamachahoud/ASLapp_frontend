@@ -1,0 +1,125 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+  <div class="container-fluid px-4">
+    <a routerLink="/" class="navbar-brand fw-bold text-primary">
+      <i class="bi bi-shop me-2"></i>ASLapp
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="isMenuOpen()"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" [class.show]="isMenuOpen()">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            routerLink="/products"
+            routerLinkActive="active"
+            (click)="closeMenu()"
+            class="nav-link"
+          >
+            Products
+          </a>
+        </li>
+
+        @if (authService.authenticated()) {
+          <li class="nav-item">
+            <a
+              routerLink="/orders"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              class="nav-link"
+            >
+              Orders
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a
+              routerLink="/cart"
+              (click)="closeMenu()"
+              class="nav-link position-relative"
+            >
+              <i class="bi bi-cart3"></i> Cart
+              @if (cartService.getCartItemCount() > 0) {
+                <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                  {{ cartService.getCartItemCount() }}
+                </span>
+              }
+            </a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="javascript:void(0)"
+              role="button"
+              (click)="$event.preventDefault()"
+              data-bs-toggle="dropdown"
+            >
+              <i class="bi bi-person-circle me-1"></i>{{ authService.user()?.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a
+                  routerLink="/profile"
+                  routerLinkActive="active"
+                  (click)="closeMenu()"
+                  class="dropdown-item"
+                >
+                  My Profile
+                </a>
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a
+                  href="javascript:void(0)"
+                  (click)="logout()"
+                  class="dropdown-item text-danger"
+                >
+                  Logout
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          @if (authService.hasRole('ROLE_ADMIN')) {
+            <li class="nav-item">
+              <a
+                routerLink="/admin"
+                routerLinkActive="active"
+                (click)="closeMenu()"
+                class="nav-link text-danger"
+              >
+                Admin
+              </a>
+            </li>
+          }
+        } @else {
+          <li class="nav-item">
+            <a
+              routerLink="/login"
+              (click)="closeMenu()"
+              class="nav-link"
+            >
+              Login
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              routerLink="/signup"
+              (click)="closeMenu()"
+              class="nav-link"
+            >
+              Sign Up
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>

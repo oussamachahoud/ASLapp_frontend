@@ -1,59 +1,126 @@
-# ASLappfrontend
+# ASLapp Frontend — E-Commerce Platform
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+**Angular 21 | TypeScript 5.9 | Bootstrap 5 | Axios**  
+**Version:** 1.0.0 | **Date:** February 27, 2026
 
-## Development server
+---
 
-To start a local development server, run:
+## 📝 Project Description
 
-```bash
-ng serve
-```
+**ASLapp** is a modern, production-ready e-commerce single-page application built with Angular 21. It integrates with a Spring Boot 3 REST API backend to deliver a complete online shopping experience — from user registration and product browsing to cart management, checkout, and order tracking. The UI is fully responsive (mobile, tablet, desktop) using Bootstrap 5.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## ✨ Key Features
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+| Module | Capabilities |
+|--------|-------------|
+| **Authentication** | Signup, email verification, login, JWT token refresh, multi-session logout, role-based access |
+| **Products** | Grid listing, search, category filter, sort (price/name), pagination, stock indicator |
+| **Cart** | Add/remove items, real-time totals, cart badge, empty state handling |
+| **Checkout** | Address selection/creation, 4 payment methods, order confirmation |
+| **Orders** | Order history (paginated), status tracking with color badges, detailed view |
+| **Profile** | Edit info, avatar upload, address CRUD (30+ Algerian wilayas), account deletion |
+| **Admin** | Admin panel with protected routes, order status management |
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## 🚀 Quick Start
 
 ```bash
-ng build
+cd E:\ASLappfrontend
+npm install
+npm start
+# → http://localhost:4200
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+**Prerequisites:** Node.js 18+, npm 10+, Backend running on `http://localhost:8081`
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
+**Production Build:**
 ```bash
-ng test
+npm run build    # Output: dist/aslappfrontend/
 ```
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## 🛒 User Flows
 
-```bash
-ng e2e
-```
+**Registration:** Sign Up → Email Verification → Login → Dashboard
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+**Shopping:** Home → Products (Search/Filter/Sort) → Add to Cart → Cart → Checkout → Order Confirmation
 
-## Additional Resources
+**Profile:** Profile → Edit Info → Upload Avatar → Manage Addresses → Logout
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+
+## 📦 Tech Stack
+
+| Technology | Version | Role |
+|-----------|---------|------|
+| Angular | 21.2.0 | Frontend framework (Signals, standalone components) |
+| TypeScript | 5.9.2 | Type-safe language |
+| Bootstrap | 5.3.8 | Responsive CSS framework |
+| Bootstrap Icons | CDN | Icon library |
+| Axios | 1.13.5 | HTTP client with interceptors |
+| RxJS | 7.8.0 | Reactive programming |
+| Vitest | 4.0.8 | Unit test runner |
+
+---
+
+## 📊 Project Stats
+
+| Metric | Count |
+|--------|-------|
+| Components | 13 |
+| Services | 5 |
+| Route Guards | 3 |
+| Data Models | 4 (12+ interfaces) |
+| Routes | 10 |
+| CSS Files | 15 |
+| Total Source Files | 60+ |
+
+---
+
+## 🔐 Security
+
+- **Cookie-based JWT** — HttpOnly, Secure, SameSite=Lax
+- **Automatic token refresh** on 401 responses
+- **Token blacklisting** on logout
+- **3 Route Guards** — AuthGuard, AdminGuard, SellerGuard
+- **CORS** configured with `withCredentials: true`
+- **Client-side validation** + type-safe TypeScript interfaces
+
+---
+
+## 🌐 Environment Config
+
+| Env | API URL | File |
+|-----|---------|------|
+| Development | `http://localhost:8081/api` | `src/environments/environment.ts` |
+| Production | `https://api.yourdomain.com/api` | `src/environments/environment.prod.ts` |
+
+---
+
+## 🆘 Common Issues
+
+| Problem | Solution |
+|---------|----------|
+| API connection failed | Ensure backend runs on port 8081 |
+| CORS errors | Verify backend CORS allows `localhost:4200` with credentials |
+| Cookies not persisting | Check browser cookie settings & SameSite policy |
+| Port in use | `ng serve --port 4300` |
+| Build fails | Delete `.angular` and `node_modules`, reinstall |
+
+---
+
+## 📚 Documentation
+
+| File | Content |
+|------|---------|
+| `README.md` | Project overview (this file) |
+| `ARCHITECTURE.md` | Technical architecture, file structure, API reference |
+| `SETUP_AND_GUIDE.md` | Setup, development workflow, testing, deployment |
+
+---
+
+*Built with Angular 21 — ASLapp E-Commerce Platform*
