@@ -10,6 +10,13 @@
 **ASLapp** is a modern, production-ready e-commerce single-page application built with Angular 21. It integrates with a Spring Boot 3 REST API backend to deliver a complete online shopping experience — from user registration and product browsing to cart management, checkout, and order tracking. The UI is fully responsive (mobile, tablet, desktop) using Bootstrap 5.
 
 ---
+| Document | Description |
+|----------|-------------|
+| [Architecture](ARCHITECTURE.md) |Architecture & Technical Reference |
+| [SETUP_AND_GUIDE ](SETUP_AND_GUIDE.md) | Setup & Development Guide |
+
+
+---
 
 ## ✨ Key Features
 
