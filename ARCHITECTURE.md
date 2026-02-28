@@ -1,3 +1,4 @@
+[← Back to README](README.md)
 # ASLapp Frontend — Architecture & Technical Reference
 
 ---
