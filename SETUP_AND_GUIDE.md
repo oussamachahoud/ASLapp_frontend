@@ -97,18 +97,31 @@ export const environment = {
 
 ---
 
-## 🚀 Build & Deploy
+## 🚀 Production Build & Deployment
 
 ```bash
-npm run build                              # Output: dist/aslappfrontend/
-npm run build -- --source-map              # With source maps
+npm run build  # Output: dist/aslappfrontend/
 ```
 
-Serve `dist/aslappfrontend/` with any static server. Redirect all routes to `index.html`:
+Deploy `dist/aslappfrontend/` to any static server (Nginx, Apache, etc.). Ensure all routes redirect to `index.html`:
 
 ```nginx
 location / { try_files $uri $uri/ /index.html; }
 ```
+
+---
+
+## 🐳 Docker (Production)
+
+```bash
+docker-compose up -d
+```
+
+**Runs frontend independently** (~25MB image). Multi-stage build: Node 22-alpine compiles Angular → Nginx 1.27-alpine serves it.
+
+**Features:** SPA routing fallback, gzip compression, browser caching, security headers, health check.
+
+**Backend:** Ensure your backend runs separately on port 8081. Frontend connects via configured API URL.
 
 ---
 

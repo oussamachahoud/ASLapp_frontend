@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  aslapp-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aslapp-frontend
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    environment:
+      - NODE_ENV=production

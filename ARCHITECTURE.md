@@ -240,4 +240,45 @@ User                Angular App              Backend API
 
 ---
 
+## 🐳 Docker Architecture (Frontend Only)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│               Docker Build (Multi-Stage)                │
+│                                                         │
+│  Stage 1: BUILD (node:22-alpine)                        │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  npm ci → ng build --configuration=production     │  │
+│  │  Output: dist/aslappfrontend/browser/             │  │
+│  └───────────────────────────────────────────────────┘  │
+│                          │                              │
+│                          ▼                              │
+│  Stage 2: SERVE (nginx:1.27-alpine) ─ ~25MB image      │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  nginx.conf: SPA routing, gzip, caching, headers  │  │
+│  │  Port 80 → Host port 4200                         │  │
+│  │  Health check enabled                             │  │
+│  └───────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────┘
+                          │
+                    HTTP :4200
+                          │
+┌─────────────────────────▼───────────────────────────────┐
+│                   Browser (Client)                       │
+│         (Connects to Backend at :8081)                   │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Container Files:**
+| File | Purpose |
+|------|---------|
+| `Dockerfile` | Multi-stage build: Node 22 compile → Nginx serve |
+| `nginx.conf` | SPA routing fallback, gzip, caching, security headers |
+| `docker-compose.yml` | Frontend service only (independent) |
+| `.dockerignore` | Excludes `node_modules`, `.git`, docs from context |
+
+**Run independently:** `docker-compose up -d` → Access http://localhost:4200
+
+---
+
 *ASLapp Architecture Reference — v1.0.0*
