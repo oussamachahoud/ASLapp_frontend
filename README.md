@@ -1,13 +1,24 @@
 # ASLapp Frontend — E-Commerce Platform
 
-**Angular 21 | TypeScript 5.9 | Bootstrap 5 | Axios**  
-**Version:** 1.0.0 | **Date:** February 27, 2026
+**Angular 21 | TypeScript 5.9 | Bootstrap 5 | Axios | Docker**  
+**Version:** 1.0.0 | **Date:** March 11, 2026
 
 ---
 
 ## 📝 Project Description
 
 **ASLapp** is a modern, production-ready e-commerce single-page application built with Angular 21. It integrates with a Spring Boot 3 REST API backend to deliver a complete online shopping experience — from user registration and product browsing to cart management, checkout, and order tracking. The UI is fully responsive (mobile, tablet, desktop) using Bootstrap 5.
+
+
+---
+
+## 📚 Documentation
+
+| File                                       | Content |
+|--------------------------------------------|---------|
+| [`README.md`](README.md)                            | Project overview (this file) |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md)       | Technical architecture, file structure, API reference |
+| [`SETUP_AND_GUIDE.md`](SETUP_AND_GUIDE.md) | Setup, development workflow, testing, deployment |
 
 ---
 
@@ -72,7 +83,7 @@ npm run build    # Output: dist/aslappfrontend/
 | Metric | Count |
 |--------|-------|
 | Components | 13 |
-| Services | 5 |
+| Services | 6 |
 | Route Guards | 3 |
 | Data Models | 4 (12+ interfaces) |
 | Routes | 10 |
@@ -124,16 +135,6 @@ Frontend runs independently. Connect to backend at `http://localhost:8081` (ensu
 | Port in use | `ng serve --port 4300` |
 | Build fails | Delete `.angular` and `node_modules`, reinstall |
 
----
 
-## 📚 Documentation
-
-| File | Content |
-|------|---------|
-| `README.md` | Project overview (this file) |
-| `ARCHITECTURE.md` | Technical architecture, file structure, API reference |
-| `SETUP_AND_GUIDE.md` | Setup, development workflow, testing, deployment |
-
----
 
 *Built with Angular 21 — ASLapp E-Commerce Platform*

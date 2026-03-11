@@ -9,6 +9,7 @@
 |-------------|---------|-------------|
 | Node.js | 18.0.0 | 20.x LTS |
 | npm | 10.0.0 | 10.8.2+ |
+| Angular CLI | 21.0.0 | 21.x |
 | OS | Windows 10+, macOS 10.14+, Linux | — |
 | Backend | Spring Boot running on port 8081 | — |
 

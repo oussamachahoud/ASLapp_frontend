@@ -19,7 +19,7 @@
 │  └─────────┘   │ Seller    │   └────────┬──────────┘ │
 │                └───────────┘            │            │
 │                              ┌──────────▼──────────┐ │
-│                              │ Services (5)        │ │
+│                              │ Domain Services (5) │ │
 │                              │ Auth│Product│Cart   │ │
 │                              │ Order│Admin          │ │
 │                              └──────────┬──────────┘ │
@@ -270,12 +270,13 @@ User                Angular App              Backend API
 ```
 
 **Container Files:**
+
 | File | Purpose |
 |------|---------|
 | `Dockerfile` | Multi-stage build: Node 22 compile → Nginx serve |
 | `nginx.conf` | SPA routing fallback, gzip, caching, security headers |
 | `docker-compose.yml` | Frontend service only (independent) |
-| `.dockerignore` | Excludes `node_modules`, `.git`, docs from context |
+| `.dockerignore` | Excludes `node_modules`, `.git`, docs from context |**
 
 **Run independently:** `docker-compose up -d` → Access http://localhost:4200
 
