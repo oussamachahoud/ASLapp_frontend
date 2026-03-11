@@ -101,6 +101,19 @@ npm run build    # Output: dist/aslappfrontend/
 
 ---
 
+## 🐳 Docker Deployment
+
+```bash
+docker-compose up -d
+# → Frontend: http://localhost:4200
+```
+
+**Files:** `Dockerfile` (multi-stage build, Node 22 → Nginx, ~25MB), `nginx.conf` (SPA routing, gzip), `.dockerignore`
+
+Frontend runs independently. Connect to backend at `http://localhost:8081` (ensure backend is running separately).
+
+---
+
 ## 🆘 Common Issues
 
 | Problem | Solution |
